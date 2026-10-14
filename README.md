@@ -20,7 +20,16 @@
 
 ## 내려받기
 
-[가장 최근 릴리스](https://github.com/seenew22/Shelf-releases/releases/latest)에서
+**터미널 한 줄이 가장 간단합니다.** 받아서 설치까지 하고, **경고 화면이 아예 없습니다.**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/seenew22/Shelf-releases/main/install.sh | bash
+```
+
+같은 명령을 다시 실행하면 최신 버전으로 갱신됩니다. 브라우저로 받은 파일에만 macOS 가
+격리 표식을 붙이기 때문에, 이 길로 받으면 아래의 허용 단계를 거치지 않습니다.
+
+터미널을 쓰지 않으시면 [가장 최근 릴리스](https://github.com/seenew22/Shelf-releases/releases/latest)에서
 **`Shelf-….dmg`** 를 받으시면 됩니다.
 
 1. 받은 파일을 엽니다
