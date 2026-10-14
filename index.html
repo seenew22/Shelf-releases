@@ -84,57 +84,26 @@
 
   .sub { font-size: 1.0625rem; color: var(--soft); font-weight: 300; margin: 0; max-width: 32rem; }
 
-  /* ── 장면 ─────────────────────────────────────── */
+  /* ── 장면: 실제로 당겨 낸 것을 녹화한 것입니다 ── */
   .stage {
     margin: clamp(2rem, 5vw, 3rem) 0 0;
-    background: var(--desk);
-    border: 1px solid var(--desk-rule);
-    border-radius: 8px;
-    height: 316px;
-    position: relative;
+    border: 1px solid var(--rule);
+    border-radius: 9px;
     overflow: hidden;
-    display: flex;
-    align-items: center;
+    background: var(--desk);
+    line-height: 0;
   }
-  .stage::before {
-    content: "";
-    position: absolute; right: 7%; top: 15%;
-    width: 44%; height: 70%;
-    border: 1px solid var(--desk-rule); border-radius: 7px;
-  }
-  .stage-grip {
-    position: absolute; left: 0; top: 50%;
-    transform: translateY(-50%);
-    width: 4px; height: 74px; border-radius: 0 3px 3px 0;
-    background: var(--teal); opacity: .8;
-    animation: grip 5.6s ease-in-out infinite;
-  }
-  .sheet {
-    position: relative; margin-left: 24px; width: 262px;
-    background: var(--paper); border: 1px solid var(--rule);
-    border-radius: 8px; padding: 10px;
-    display: flex; flex-direction: column; gap: 4px;
-    box-shadow: 0 16px 42px rgba(0,0,0,.40);
-    animation: pull 5.6s cubic-bezier(.2,.9,.3,1) infinite;
-  }
-  .r { display: flex; align-items: center; gap: 9px; padding: 6px 7px; border-radius: 5px; font-size: .8125rem; white-space: nowrap; overflow: hidden; }
-  .r.on { background: color-mix(in srgb, var(--teal) 15%, transparent); }
-  .r i { flex: none; width: 21px; height: 21px; border-radius: 4px; border: 1px solid var(--rule); background: color-mix(in srgb, var(--teal) 13%, transparent); }
-  .r s { text-decoration: none; overflow: hidden; text-overflow: ellipsis; }
-  .r u { margin-left: auto; text-decoration: none; color: var(--faint); font-size: .6875rem; font-family: var(--mono); }
-
-  @keyframes pull {
-    0%, 8%   { transform: translateX(-278px); opacity: .2; }
-    26%, 72% { transform: translateX(0); opacity: 1; }
-    92%,100% { transform: translateX(-278px); opacity: .2; }
-  }
-  @keyframes grip {
-    0%,10%,88%,100% { opacity: .8; height: 74px; }
-    24%,74%         { opacity: .18; height: 42px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .sheet { animation: none; transform: none; opacity: 1; }
-    .stage-grip { animation: none; opacity: .28; }
+  .stage video { width: 100%; height: auto; display: block; }
+  .stage figcaption {
+    font-family: var(--mono);
+    font-size: .6875rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    line-height: 1.6;
+    padding: .7rem .9rem;
+    border-top: 1px solid var(--rule);
+    background: var(--paper);
   }
 
   /* ── 제품 명세 — 왼쪽 여백에 항목 이름, 오른쪽에 내용 ── */
@@ -223,16 +192,13 @@
     <h1>복사한 것이 화면 끝에 쌓입니다.</h1>
     <p class="sub">화면 가장자리를 당기면 선반이 따라 나옵니다. 맥에서 복사한 글과 이미지, 파일이 거기 있습니다.</p>
 
-    <div class="stage" role="img" aria-label="화면 왼쪽 가장자리를 당기면 복사 기록이 담긴 목록이 따라 나오는 모습">
-      <div class="stage-grip"></div>
-      <div class="sheet">
-        <div class="r on"><i></i><s>ksy974@gmail.com</s><u>방금</u></div>
-        <div class="r"><i></i><s>분기 보고서.pdf</s><u>2분</u></div>
-        <div class="r"><i></i><s>스크린샷 2026-10-14.png</s><u>9분</u></div>
-        <div class="r"><i></i><s>git switch -c feature/preview</s><u>14분</u></div>
-        <div class="r"><i></i><s>서울시 성동구 성수이로…</s><u>1시간</u></div>
-      </div>
-    </div>
+    <figure class="stage">
+      <video autoplay loop muted playsinline poster="poster.jpg"
+             aria-label="화면 왼쪽 가장자리를 눌러 당기면 복사 기록이 담긴 선반이 따라 나오는 모습">
+        <source src="shelf-demo.mp4" type="video/mp4">
+      </video>
+      <figcaption>화면 왼쪽 끝을 눌러서 당기는 중</figcaption>
+    </figure>
   </div>
 
   <dl class="sheetlist">
