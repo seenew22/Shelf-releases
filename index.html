@@ -1,493 +1,315 @@
 <title>Shelf for Mac</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500;600&display=swap">
 <style>
   :root {
-    --ground: #F1F4F3;
+    --paper:  #EEF1F0;
     --raised: #FFFFFF;
-    --line:   #D9E0DE;
-    --line-strong: #BFC9C7;
-    --text:   #14191A;
-    --muted:  #5C6A69;
-    --faint:  #8A9796;
-    --accent: #2C7C72;
-    --accent-dim: #8FBDB7;
-    --desk:   #1B2224;
-    --desk-line: #2C3639;
-    --desk-text: #DDE5E3;
-    --desk-muted: #7D8C8B;
+    --rule:   #D5DCDA;
+    --ink:    #111718;
+    --soft:   #55615F;
+    --faint:  #879593;
+    --teal:   #276F67;
+    --teal-soft: #BBD3CF;
+    --desk:   #171D1F;
+    --desk-rule: #2A3335;
 
     --sans: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
-
-    --rail: 3px;
-    --measure: 34rem;
+    --margin-col: 6.5rem;
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --ground: #101617;
-      --raised: #171E20;
-      --line:   #232C2E;
-      --line-strong: #323E40;
-      --text:   #E4EBE9;
-      --muted:  #93A3A1;
-      --faint:  #6B7A79;
-      --accent: #63A69C;
-      --accent-dim: #35564F;
-      --desk:   #080C0D;
-      --desk-line: #1A2224;
-      --desk-text: #E4EBE9;
-      --desk-muted: #7D8C8B;
+      --paper:  #0F1415;
+      --raised: #161D1E;
+      --rule:   #232C2D;
+      --ink:    #E3EAE8;
+      --soft:   #9AA8A6;
+      --faint:  #6D7B79;
+      --teal:   #6BAFA5;
+      --teal-soft: #2E4A46;
+      --desk:   #080B0C;
+      --desk-rule: #19201F;
     }
   }
-
   :root[data-theme="dark"] {
-    --ground: #101617;
-    --raised: #171E20;
-    --line:   #232C2E;
-    --line-strong: #323E40;
-    --text:   #E4EBE9;
-    --muted:  #93A3A1;
-    --faint:  #6B7A79;
-    --accent: #63A69C;
-    --accent-dim: #35564F;
-    --desk:   #080C0D;
-    --desk-line: #1A2224;
-    --desk-text: #E4EBE9;
-    --desk-muted: #7D8C8B;
+    --paper:  #0F1415;
+    --raised: #161D1E;
+    --rule:   #232C2D;
+    --ink:    #E3EAE8;
+    --soft:   #9AA8A6;
+    --faint:  #6D7B79;
+    --teal:   #6BAFA5;
+    --teal-soft: #2E4A46;
+    --desk:   #080B0C;
+    --desk-rule: #19201F;
   }
 
   * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    background: var(--ground);
-    color: var(--text);
+    background: var(--paper);
+    color: var(--ink);
     font-family: var(--sans);
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.75;
+    font-size: 15.5px;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* 화면 왼쪽 끝에 붙어 있는 가는 띠. 앱이 쉬고 있을 때 내보이는 손잡이와 같은 것입니다. */
-  .grip {
-    position: fixed;
-    inset: 0 auto 0 0;
-    width: var(--rail);
-    background: linear-gradient(to bottom, transparent, var(--accent) 12%, var(--accent) 88%, transparent);
-    opacity: .5;
-    z-index: 10;
-  }
+  .page { max-width: 48rem; margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 2.5rem) 5rem; }
 
-  .wrap { max-width: 60rem; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 4rem); }
-  .prose { max-width: var(--measure); }
+  /* ── 여는 글 ───────────────────────────────────── */
+  .top { padding: clamp(2.75rem, 8vw, 4.5rem) 0 0; }
 
-  /* ── 머리 ─────────────────────────────────────────── */
-  header { padding: clamp(3rem, 8vw, 5.5rem) 0 0; }
-
-  .wordmark {
+  .name {
+    font-family: var(--mono);
     font-size: .8125rem;
-    letter-spacing: .22em;
+    letter-spacing: .2em;
     text-transform: uppercase;
-    font-weight: 500;
-    color: var(--accent);
-    margin: 0 0 clamp(1.75rem, 4vw, 2.75rem);
+    color: var(--teal);
+    margin: 0 0 1.75rem;
   }
 
   h1 {
-    font-size: clamp(2.1rem, 6vw, 3.4rem);
-    line-height: 1.22;
-    letter-spacing: -.022em;
+    font-size: clamp(1.9rem, 5.4vw, 2.85rem);
+    line-height: 1.25;
+    letter-spacing: -.025em;
     font-weight: 600;
-    margin: 0 0 1.25rem;
+    margin: 0 0 .9rem;
     text-wrap: balance;
   }
-  h1 em { font-style: normal; color: var(--accent); }
 
-  .lede {
-    font-size: clamp(1.0625rem, 2.2vw, 1.1875rem);
-    color: var(--muted);
-    font-weight: 300;
-    margin: 0;
-    max-width: var(--measure);
-  }
+  .sub { font-size: 1.0625rem; color: var(--soft); font-weight: 300; margin: 0; max-width: 32rem; }
 
-  /* ── 히어로: 가장자리에서 끌려 나오는 장면 ─────────── */
+  /* ── 장면 ─────────────────────────────────────── */
   .stage {
-    margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+    margin: clamp(2rem, 5vw, 3rem) 0 0;
     background: var(--desk);
-    border: 1px solid var(--desk-line);
-    border-radius: 10px;
-    height: 330px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-  }
-
-  .stage::before { /* 책상 위 다른 창의 기척 */
-    content: "";
-    position: absolute;
-    right: 8%;
-    top: 16%;
-    width: 46%;
-    height: 68%;
-    border: 1px solid var(--desk-line);
+    border: 1px solid var(--desk-rule);
     border-radius: 8px;
-  }
-
-  .stage-grip {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 76px;
-    border-radius: 0 3px 3px 0;
-    background: var(--accent);
-    opacity: .85;
-    animation: grip-pulse 5.5s ease-in-out infinite;
-  }
-
-  .sheet {
+    height: 316px;
     position: relative;
-    margin-left: 26px;
-    width: 268px;
-    background: var(--ground);
-    border: 1px solid var(--line);
-    border-radius: 9px;
-    padding: 11px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    box-shadow: 0 18px 46px rgba(0,0,0,.42);
-    transform-origin: left center;
-    animation: pull 5.5s cubic-bezier(.22,.9,.3,1) infinite;
-  }
-
-  .row {
+    overflow: hidden;
     display: flex;
     align-items: center;
-    gap: 9px;
-    padding: 7px 8px;
-    border-radius: 6px;
-    font-size: .8125rem;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
   }
-  .row.is-on { background: color-mix(in srgb, var(--accent) 14%, transparent); }
-  .row .chip {
-    flex: none;
-    width: 22px; height: 22px;
-    border-radius: 4px;
-    border: 1px solid var(--line-strong);
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  .stage::before {
+    content: "";
+    position: absolute; right: 7%; top: 15%;
+    width: 44%; height: 70%;
+    border: 1px solid var(--desk-rule); border-radius: 7px;
   }
-  .row .txt { overflow: hidden; text-overflow: ellipsis; }
-  .row .when { margin-left: auto; color: var(--faint); font-size: .6875rem; font-family: var(--mono); }
+  .stage-grip {
+    position: absolute; left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 4px; height: 74px; border-radius: 0 3px 3px 0;
+    background: var(--teal); opacity: .8;
+    animation: grip 5.6s ease-in-out infinite;
+  }
+  .sheet {
+    position: relative; margin-left: 24px; width: 262px;
+    background: var(--paper); border: 1px solid var(--rule);
+    border-radius: 8px; padding: 10px;
+    display: flex; flex-direction: column; gap: 4px;
+    box-shadow: 0 16px 42px rgba(0,0,0,.40);
+    animation: pull 5.6s cubic-bezier(.2,.9,.3,1) infinite;
+  }
+  .r { display: flex; align-items: center; gap: 9px; padding: 6px 7px; border-radius: 5px; font-size: .8125rem; white-space: nowrap; overflow: hidden; }
+  .r.on { background: color-mix(in srgb, var(--teal) 15%, transparent); }
+  .r i { flex: none; width: 21px; height: 21px; border-radius: 4px; border: 1px solid var(--rule); background: color-mix(in srgb, var(--teal) 13%, transparent); }
+  .r s { text-decoration: none; overflow: hidden; text-overflow: ellipsis; }
+  .r u { margin-left: auto; text-decoration: none; color: var(--faint); font-size: .6875rem; font-family: var(--mono); }
 
   @keyframes pull {
-    0%, 8%    { transform: translateX(-284px); opacity: .25; }
-    26%, 72%  { transform: translateX(0); opacity: 1; }
-    92%, 100% { transform: translateX(-284px); opacity: .25; }
+    0%, 8%   { transform: translateX(-278px); opacity: .2; }
+    26%, 72% { transform: translateX(0); opacity: 1; }
+    92%,100% { transform: translateX(-278px); opacity: .2; }
   }
-  @keyframes grip-pulse {
-    0%, 10%, 88%, 100% { opacity: .85; height: 76px; }
-    24%, 74%           { opacity: .2;  height: 44px; }
+  @keyframes grip {
+    0%,10%,88%,100% { opacity: .8; height: 74px; }
+    24%,74%         { opacity: .18; height: 42px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .sheet { animation: none; transform: translateX(0); opacity: 1; }
-    .stage-grip { animation: none; opacity: .3; }
+    .sheet { animation: none; transform: none; opacity: 1; }
+    .stage-grip { animation: none; opacity: .28; }
   }
 
-  /* ── 본문 ─────────────────────────────────────────── */
-  section { padding: clamp(3rem, 7vw, 4.5rem) 0; border-top: 1px solid var(--line); }
-  section:first-of-type { border-top: 0; }
-
-  .eyebrow {
-    font-size: .75rem;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--faint);
-    margin: 0 0 1rem;
-  }
-
-  h2 {
-    font-size: clamp(1.375rem, 3.2vw, 1.75rem);
-    line-height: 1.4;
-    letter-spacing: -.014em;
-    font-weight: 600;
-    margin: 0 0 1rem;
-    text-wrap: balance;
-  }
-
-  p { margin: 0 0 1rem; }
-  p:last-child { margin-bottom: 0; }
-  .muted { color: var(--muted); }
-
-  /* 할 수 있는 것: 카드가 아니라 가는 줄로 나눈 목록 */
-  .feats { margin: 2rem 0 0; display: grid; gap: 0; }
-  .feat {
+  /* ── 제품 명세 — 왼쪽 여백에 항목 이름, 오른쪽에 내용 ── */
+  .sheetlist { margin: clamp(2.5rem, 6vw, 3.5rem) 0 0; border-top: 1px solid var(--rule); }
+  .line {
     display: grid;
-    grid-template-columns: 7.5rem 1fr;
-    gap: clamp(1rem, 3vw, 2rem);
-    padding: 1.3rem 0;
-    border-top: 1px solid var(--line);
+    grid-template-columns: var(--margin-col) 1fr;
+    gap: 0 1.75rem;
+    padding: 1.05rem 0;
+    border-bottom: 1px solid var(--rule);
     align-items: baseline;
   }
-  .feat:last-child { border-bottom: 1px solid var(--line); }
-  .feat dt {
+  .line > dt {
     font-family: var(--mono);
-    font-size: .75rem;
-    letter-spacing: .04em;
-    color: var(--accent);
+    font-size: .6875rem;
+    letter-spacing: .12em;
     text-transform: uppercase;
+    color: var(--faint);
+    padding-top: .22rem;
   }
-  .feat dd { margin: 0; }
-  .feat b { font-weight: 600; }
-  @media (max-width: 34rem) {
-    .feat { grid-template-columns: 1fr; gap: .4rem; }
+  .line > dd { margin: 0; }
+  .line b { font-weight: 600; }
+  .line small { display: block; color: var(--soft); font-size: .875rem; margin-top: .1rem; }
+  @media (max-width: 32rem) {
+    .line { grid-template-columns: 1fr; gap: .25rem; }
+    .line > dt { padding-top: 0; }
   }
 
   kbd {
-    font-family: var(--mono);
-    font-size: .8125em;
-    border: 1px solid var(--line-strong);
-    border-bottom-width: 2px;
-    border-radius: 4px;
-    padding: .08em .36em;
-    background: var(--raised);
-    white-space: nowrap;
+    font-family: var(--mono); font-size: .8em;
+    border: 1px solid var(--rule); border-bottom-width: 2px;
+    border-radius: 4px; padding: .06em .34em;
+    background: var(--raised); white-space: nowrap;
   }
+  code { font-family: var(--mono); font-size: .875em; color: var(--soft); }
 
-  /* 받기 — 이 페이지에서 유일하게 들어올린 면 */
-  .get {
-    background: var(--raised);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: clamp(1.5rem, 4vw, 2.25rem);
-    margin-top: 2rem;
-    display: grid;
-    gap: 1.75rem;
+  /* ── 받기 ─────────────────────────────────────── */
+  .get { margin: clamp(2.5rem, 6vw, 3.5rem) 0 0; }
+  .get > h2 {
+    font-size: 1.0625rem; font-weight: 600; margin: 0 0 1.25rem;
+    letter-spacing: -.01em;
   }
-  .lane { display: grid; gap: .7rem; }
-  .lane h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-    flex-wrap: wrap;
-  }
+  .lane { padding: 1.3rem 0; border-top: 1px solid var(--rule); }
+  .lane:last-of-type { border-bottom: 1px solid var(--rule); }
+  .lane h3 { font-size: .9375rem; font-weight: 600; margin: 0 0 .5rem; display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
+  .lane p { margin: 0 0 .85rem; color: var(--soft); font-size: .9375rem; }
+  .lane p:last-child { margin-bottom: 0; }
   .tag {
-    font-family: var(--mono);
-    font-size: .6875rem;
-    letter-spacing: .03em;
-    padding: .18em .5em;
-    border-radius: 999px;
-    border: 1px solid var(--accent-dim);
-    color: var(--accent);
-    font-weight: 400;
-  }
-  .lane p { font-size: .9375rem; color: var(--muted); margin: 0; }
-
-  a.button {
-    justify-self: start;
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    background: var(--accent);
-    color: var(--ground);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: .9375rem;
-    padding: .66rem 1.2rem;
-    border-radius: 7px;
-  }
-  a.button:hover { filter: brightness(1.08); }
-
-  .cmd {
-    font-family: var(--mono);
-    font-size: .8125rem;
-    background: var(--desk);
-    color: var(--desk-text);
-    border: 1px solid var(--desk-line);
-    border-radius: 7px;
-    padding: .8rem .9rem;
-    overflow-x: auto;
-    white-space: pre;
-    margin: 0;
-  }
-  .cmd .sel { color: var(--accent); }
-
-  .note {
-    border-left: 2px solid var(--accent-dim);
-    padding-left: 1rem;
-    color: var(--muted);
-    font-size: .9375rem;
+    font-family: var(--mono); font-size: .625rem; letter-spacing: .08em;
+    text-transform: uppercase; padding: .2em .55em; border-radius: 3px;
+    background: var(--teal-soft); color: var(--teal); font-weight: 500;
   }
 
-  ol.steps { margin: 1rem 0 0; padding-left: 1.2rem; color: var(--muted); font-size: .9375rem; }
-  ol.steps li { margin-bottom: .35rem; }
+  a.dl {
+    display: inline-block; background: var(--teal); color: var(--paper);
+    text-decoration: none; font-weight: 600; font-size: .9375rem;
+    padding: .58rem 1.1rem; border-radius: 6px;
+  }
+  a.dl:hover { filter: brightness(1.1); }
 
-  table.spec {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1.5rem;
-    font-size: .9375rem;
+  pre.cmd {
+    font-family: var(--mono); font-size: .78rem;
+    background: var(--desk); color: #CFE0DC;
+    border-radius: 6px; padding: .75rem .85rem;
+    overflow-x: auto; white-space: pre; margin: 0 0 .85rem;
   }
-  table.spec th, table.spec td {
-    text-align: left;
-    padding: .7rem 0;
-    border-top: 1px solid var(--line);
-    vertical-align: top;
-  }
-  table.spec th { font-weight: 500; color: var(--faint); width: 9rem; }
+
+  ol { margin: .4rem 0 0; padding-left: 1.15rem; color: var(--soft); font-size: .9375rem; }
+  ol li { margin-bottom: .2rem; }
 
   footer {
-    border-top: 1px solid var(--line);
-    padding: 2.5rem 0 4rem;
-    color: var(--faint);
-    font-size: .875rem;
-    display: flex;
-    gap: 1.25rem;
-    flex-wrap: wrap;
-    align-items: baseline;
+    margin-top: 3rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    color: var(--faint); font-size: .8125rem;
+    display: flex; gap: 1.1rem; flex-wrap: wrap;
   }
-  footer a { color: var(--muted); }
-  a { color: var(--accent); }
-  a:focus-visible, .button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  a { color: var(--teal); }
+  footer a { color: var(--soft); }
+  a:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 3px; }
 </style>
 
-<div class="grip" aria-hidden="true"></div>
+<div class="page">
 
-<div class="wrap">
+  <div class="top">
+    <p class="name">Shelf</p>
+    <h1>복사한 것이 화면 끝에 쌓입니다.</h1>
+    <p class="sub">화면 가장자리를 당기면 선반이 따라 나옵니다. 맥에서 복사한 글과 이미지, 파일이 거기 있습니다.</p>
 
-  <header>
-    <p class="wordmark">Shelf</p>
-    <h1>복사한 것이 <em>화면 끝에</em> 쌓입니다.</h1>
-    <p class="lede">
-      맥에서 복사한 글·이미지·파일을 모아 두는 메뉴 바 앱입니다.
-      화면 가장자리를 당기면 선반이 따라 나오고, 거기서 다시 복사하거나 다른 앱으로 끌어다 놓습니다.
-    </p>
-
-    <div class="stage" role="img" aria-label="화면 왼쪽 가장자리를 당기면 복사 기록 목록이 따라 나오는 모습">
+    <div class="stage" role="img" aria-label="화면 왼쪽 가장자리를 당기면 복사 기록이 담긴 목록이 따라 나오는 모습">
       <div class="stage-grip"></div>
       <div class="sheet">
-        <div class="row is-on"><span class="chip"></span><span class="txt">ksy974@gmail.com</span><span class="when">방금</span></div>
-        <div class="row"><span class="chip"></span><span class="txt">분기 보고서.pdf</span><span class="when">2분</span></div>
-        <div class="row"><span class="chip"></span><span class="txt">스크린샷 2026-10-14.png</span><span class="when">9분</span></div>
-        <div class="row"><span class="chip"></span><span class="txt">git switch -c feature/preview</span><span class="when">14분</span></div>
-        <div class="row"><span class="chip"></span><span class="txt">서울시 성동구 성수이로…</span><span class="when">1시간</span></div>
+        <div class="r on"><i></i><s>ksy974@gmail.com</s><u>방금</u></div>
+        <div class="r"><i></i><s>분기 보고서.pdf</s><u>2분</u></div>
+        <div class="r"><i></i><s>스크린샷 2026-10-14.png</s><u>9분</u></div>
+        <div class="r"><i></i><s>git switch -c feature/preview</s><u>14분</u></div>
+        <div class="r"><i></i><s>서울시 성동구 성수이로…</s><u>1시간</u></div>
       </div>
     </div>
-  </header>
+  </div>
 
-  <section>
-    <p class="eyebrow">먼저 말씀드릴 것</p>
-    <div class="prose">
-      <h2>복사한 것은 이 맥 밖으로 나가지 않습니다.</h2>
-      <p class="muted">
-        계정도, 서버도, 동기화도 없습니다. 기록은 전부
-        <code style="font-family:var(--mono);font-size:.875em">~/Library/Application&nbsp;Support/Shelf</code>
-        안에만 저장되고, 앱이 통신하는 곳은 새 버전이 있는지 묻는 그 한 번뿐입니다. 눌렀을 때만 묻습니다.
-      </p>
-      <p class="muted">
-        비밀번호 관리자가 <b>민감한 내용</b>이라고 표시해 둔 복사는 읽지도 않고 건너뜁니다.
-        1Password 나 키체인에서 복사한 비밀번호는 목록에 남지 않습니다.
-      </p>
+  <dl class="sheetlist">
+    <div class="line">
+      <dt>꺼내기</dt>
+      <dd>화면 왼쪽이나 오른쪽 끝을 눌러서 당깁니다. <kbd>⌘</kbd><kbd>⇧</kbd><kbd>V</kbd> 로도 열립니다.
+        <small>스쳐서 열리지 않도록, 가장자리에서 시작한 누름만 받습니다.</small></dd>
     </div>
-  </section>
-
-  <section>
-    <p class="eyebrow">할 수 있는 것</p>
-    <h2>꺼내는 방법이 여럿입니다.</h2>
-    <dl class="feats">
-      <div class="feat">
-        <dt>가장자리</dt>
-        <dd><b>화면 왼쪽이나 오른쪽 끝을 눌러서 당기면</b> 선반이 따라 나옵니다. 스쳐서 열리지 않도록, 가장자리에서 시작한 누름만 받아들입니다.</dd>
-      </div>
-      <div class="feat">
-        <dt>단축키</dt>
-        <dd><kbd>⌘</kbd><kbd>⇧</kbd><kbd>V</kbd> 를 누르면 <b>마우스 커서 옆에</b> 열립니다. 화살표로 고르고 <kbd>⏎</kbd> 로 다시 복사, <kbd>⌘</kbd><kbd>⌫</kbd> 로 지웁니다.</dd>
-      </div>
-      <div class="feat">
-        <dt>끌어내기</dt>
-        <dd>목록에서 바로 끌어다 놓으면 <b>진짜 파일로</b> 떨어집니다. 붙여넣기가 아니라 파일이라, 메일 첨부나 Finder 로도 그대로 갑니다.</dd>
-      </div>
-      <div class="feat">
-        <dt>크게 보기</dt>
-        <dd>목록 왼쪽 그림에 마우스를 올리면 <b>옆에 크게 뜹니다.</b> PDF 는 첫 쪽, 동영상은 한 장면이 보입니다. <kbd>space</kbd> 로 띄워 두면 거기서 바로 끌어낼 수도 있습니다.</dd>
-      </div>
-      <div class="feat">
-        <dt>아이폰</dt>
-        <dd>아이폰이나 아이패드에서 복사한 것도 쌓입니다. 애플의 <b>유니버설 클립보드</b>가 맥까지 보내 주고, 이 앱은 맥의 클립보드를 보기 때문입니다. 따로 설정할 것은 없습니다.</dd>
-      </div>
-    </dl>
-  </section>
-
-  <section>
-    <p class="eyebrow">받기</p>
-    <h2>두 가지 방법이 있습니다.</h2>
-    <p class="muted prose">아래쪽이 더 간단합니다. 브라우저로 받은 파일에만 macOS 가 경고를 띄우기 때문입니다.</p>
-
-    <div class="get">
-      <div class="lane">
-        <h3>디스크 이미지로 받기</h3>
-        <p>열어서 <b>응용 프로그램</b> 폴더로 끌어 넣으면 됩니다. 처음 열 때 한 번 허용해 주셔야 합니다.</p>
-        <a class="button" href="https://github.com/seenew22/Shelf-releases/releases/latest">최신 버전 받기 (.dmg)</a>
-      </div>
-
-      <div class="lane">
-        <h3>터미널 한 줄로 <span class="tag">경고 없음</span></h3>
-        <p>터미널에 붙여 넣으면 받아서 설치까지 합니다. <b>허용 단계가 아예 없습니다.</b></p>
-<pre class="cmd"><span class="sel">curl -fsSL https://raw.githubusercontent.com/seenew22/Shelf-releases/main/install.sh | bash</span></pre>
-        <p>같은 명령을 다시 실행하면 최신 버전으로 갱신됩니다.</p>
-      </div>
+    <div class="line">
+      <dt>되돌리기</dt>
+      <dd>클릭하면 다시 복사됩니다. 끌어내면 <b>진짜 파일로</b> 떨어집니다.
+        <small>붙여넣기가 아니라 파일이라, 메일 첨부와 Finder 로 그대로 갑니다.</small></dd>
     </div>
-  </section>
+    <div class="line">
+      <dt>미리보기</dt>
+      <dd>목록 왼쪽 그림에 마우스를 올리면 옆에 크게 뜹니다.
+        <small>PDF 는 첫 쪽, 동영상은 한 장면. <kbd>space</kbd> 로 띄워 두면 거기서 끌어낼 수 있습니다.</small></dd>
+    </div>
+    <div class="line">
+      <dt>아이폰</dt>
+      <dd>아이폰에서 복사한 것도 쌓입니다.
+        <small>애플의 유니버설 클립보드가 맥까지 보내 주고, 이 앱은 맥의 클립보드를 봅니다. 설정할 것은 없습니다.</small></dd>
+    </div>
+    <div class="line">
+      <dt>보관</dt>
+      <dd>50개까지. 압정으로 고정한 항목은 밀려나지 않습니다.</dd>
+    </div>
+    <div class="line">
+      <dt>저장 위치</dt>
+      <dd><code>~/Library/Application Support/Shelf</code>
+        <small>계정도 서버도 동기화도 없습니다. 복사한 내용은 이 맥 밖으로 나가지 않습니다.</small></dd>
+    </div>
+    <div class="line">
+      <dt>비밀번호</dt>
+      <dd>비밀번호 관리자에서 복사한 것은 읽지 않습니다.
+        <small>민감한 내용이라는 표시가 붙어 있으면 건너뜁니다. 목록에 남지 않습니다.</small></dd>
+    </div>
+    <div class="line">
+      <dt>필요</dt>
+      <dd>macOS 14 (Sonoma) 이상. 애플 실리콘과 인텔 맥 모두. 한국어와 English.</dd>
+    </div>
+    <div class="line">
+      <dt>값</dt>
+      <dd>무료</dd>
+    </div>
+  </dl>
 
-  <section>
-    <p class="eyebrow">처음 열 때</p>
-    <div class="prose">
-      <h2>“확인되지 않은 개발자”라고 나옵니다.</h2>
-      <p class="muted">
-        애플에 연 $99 를 내고 받는 서명이 없어서 그렇습니다. 앱이 손상된 것도, 무언가 숨기는 것도 아니고,
-        <b>만든 사람을 애플이 보증하지 않았다</b>는 뜻입니다. 숨기지 않고 적어 둡니다.
-      </p>
-      <ol class="steps">
-        <li><code style="font-family:var(--mono);font-size:.875em">시스템 설정 → 개인정보 보호 및 보안</code> 을 엽니다</li>
-        <li>아래로 내리면 <b>“Shelf”이(가) 차단되었습니다</b> 라는 줄이 있습니다</li>
-        <li><b>그래도 열기</b> 를 누르고 암호를 입력합니다</li>
+  <div class="get">
+    <h2>받기</h2>
+
+    <div class="lane">
+      <h3>터미널 <span class="tag">권장</span></h3>
+      <p>붙여 넣으면 받아서 설치까지 합니다. 아래의 허용 단계가 없습니다.</p>
+<pre class="cmd">curl -fsSL https://raw.githubusercontent.com/seenew22/Shelf-releases/main/install.sh | bash</pre>
+      <p>같은 명령을 다시 실행하면 최신 버전으로 갱신됩니다.</p>
+    </div>
+
+    <div class="lane">
+      <h3>디스크 이미지</h3>
+      <p>열어서 <b>응용 프로그램</b> 폴더로 끌어 넣습니다.</p>
+      <p><a class="dl" href="https://github.com/seenew22/Shelf-releases/releases/latest">최신 버전 받기 (.dmg)</a></p>
+    </div>
+
+    <div class="lane">
+      <h3>처음 열 때 한 번 막힙니다</h3>
+      <p>서명을 받지 않은 앱이라 macOS 가 한 번 확인을 요구합니다. 한 번만 허용하면 다음부터 그냥 열립니다.</p>
+      <ol>
+        <li><code>시스템 설정 → 개인정보 보호 및 보안</code></li>
+        <li>아래로 내리면 <b>“Shelf”이(가) 차단되었습니다</b></li>
+        <li><b>그래도 열기</b> 를 누르고 암호 입력</li>
       </ol>
-      <p class="note">
-        예전 macOS 에서 쓰던 “우클릭 후 열기”는 Sequoia 부터 막혔습니다. 위 경로가 유일합니다.
-        터미널 한 줄로 설치하면 이 과정 자체가 없습니다.
-      </p>
     </div>
-  </section>
-
-  <section>
-    <p class="eyebrow">요구 사항</p>
-    <table class="spec">
-      <tr><th>운영체제</th><td><b>macOS 14 (Sonoma) 이상.</b> 13 이하에서는 설치되지 않습니다.</td></tr>
-      <tr><th>기기</th><td>애플 실리콘과 인텔 맥 모두</td></tr>
-      <tr><th>보관 개수</th><td>50개. 압정으로 고정한 항목은 밀려나지 않습니다</td></tr>
-      <tr><th>언어</th><td>한국어, English</td></tr>
-      <tr><th>값</th><td>무료</td></tr>
-    </table>
-  </section>
+  </div>
 
   <footer>
     <span>김신유 · <a href="mailto:ksy974@gmail.com">ksy974@gmail.com</a></span>
     <span><a href="https://github.com/seenew22/Shelf-releases">릴리스 저장소</a></span>
-    <span>소스는 공개하지 않습니다</span>
   </footer>
 
 </div>
