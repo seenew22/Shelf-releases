@@ -1,3 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="description" content="맥에서 복사한 글과 이미지, 파일이 화면 가장자리의 선반에 쌓입니다. 당기면 나오고, 누르면 다시 복사되고, 끌어내면 진짜 파일로 떨어집니다. 계정도 서버도 없는 무료 macOS 메뉴 막대 앱.">
+<link rel="canonical" href="https://seenew22.github.io/Shelf-releases/">
+<link rel="alternate" type="text/markdown" href="https://seenew22.github.io/Shelf-releases/index.md" title="Shelf for Mac (Markdown)">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#EEF1F0">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0F1415">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Shelf">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://seenew22.github.io/Shelf-releases/">
+<meta property="og:title" content="Shelf — 복사한 것이 화면 끝에 쌓입니다">
+<meta property="og:description" content="화면 가장자리를 당기면 선반이 따라 나옵니다. 맥에서 복사한 글과 이미지, 파일이 거기 있습니다.">
+<meta property="og:image" content="https://seenew22.github.io/Shelf-releases/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="맥 화면 왼쪽 끝에서 나온 Shelf 패널. 복사한 메일 주소, 이미지, 명령어, 주소가 목록으로 쌓여 있습니다.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shelf — 복사한 것이 화면 끝에 쌓입니다">
+<meta name="twitter:description" content="화면 가장자리를 당기면 선반이 따라 나옵니다. 맥에서 복사한 글과 이미지, 파일이 거기 있습니다.">
+<meta name="twitter:image" content="https://seenew22.github.io/Shelf-releases/og-image.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Shelf",
+  "alternateName": "Shelf for Mac",
+  "url": "https://seenew22.github.io/Shelf-releases/",
+  "description": "맥에서 복사한 글과 이미지, 파일을 화면 가장자리의 선반에 쌓아 두고 다시 꺼내 쓰는 메뉴 막대 앱입니다. 계정도 서버도 동기화도 없이 이 맥 안에서만 동작합니다.",
+  "applicationCategory": "UtilitiesApplication",
+  "applicationSubCategory": "클립보드 기록 관리 (clipboard history manager)",
+  "operatingSystem": "macOS 14.0 이상 (Apple Silicon, Intel)",
+  "inLanguage": ["ko", "en"],
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "downloadUrl": "https://github.com/seenew22/Shelf-releases/releases/latest",
+  "installUrl": "https://seenew22.github.io/Shelf-releases/",
+  "image": "https://seenew22.github.io/Shelf-releases/og-image.jpg",
+  "screenshot": "https://seenew22.github.io/Shelf-releases/og-image.jpg",
+  "featureList": [
+    "복사한 글, 이미지, 파일을 50개까지 기록",
+    "화면 왼쪽이나 오른쪽 가장자리를 당겨서 열기",
+    "⌘⇧V 전역 단축키로도 열기",
+    "누르면 다시 복사, 끌어내면 진짜 파일로 떨어짐",
+    "목록 그림에 마우스를 올리면 크게 보기 (PDF 첫 쪽, 동영상 한 장면)",
+    "압정으로 고정한 항목은 50개 제한에서 밀려나지 않음",
+    "비밀번호 관리자가 표시한 민감한 복사는 기록하지 않음",
+    "아이폰에서 복사한 것도 유니버설 클립보드를 통해 함께 쌓임",
+    "한국어와 English"
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "김신유",
+    "alternateName": "Kim Sinyu",
+    "email": "ksy974@gmail.com"
+  },
+  "softwareHelp": { "@type": "CreativeWork", "url": "https://seenew22.github.io/Shelf-releases/" }
+}
+</script>
+
 <title>Shelf for Mac</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,6 +117,8 @@
 
   body {
     margin: 0;
+    word-break: keep-all;
+    overflow-wrap: break-word;
     background: var(--paper);
     color: var(--ink);
     font-family: var(--sans);
@@ -168,7 +236,7 @@
     font-family: var(--mono); font-size: .78rem;
     background: var(--desk); color: #CFE0DC;
     border-radius: 6px; padding: .75rem .85rem;
-    overflow-x: auto; white-space: pre; margin: 0 0 .85rem;
+    white-space: pre-wrap; word-break: break-all; margin: 0 0 .85rem;
   }
 
   ol { margin: .4rem 0 0; padding-left: 1.15rem; color: var(--soft); font-size: .9375rem; }
@@ -184,6 +252,8 @@
   footer a { color: var(--soft); }
   a:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 3px; }
 </style>
+</head>
+<body>
 
 <div class="page">
 
@@ -279,3 +349,18 @@
   </footer>
 
 </div>
+
+<script>
+  // 움직임을 줄여 달라고 설정해 둔 사람에게는 영상을 돌리지 않습니다.
+  // 멈춘 자리에는 포스터가 남고, 보고 싶으면 직접 재생할 수 있게 조작부를 답니다.
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('video').forEach(function (v) {
+      v.removeAttribute('autoplay');
+      v.removeAttribute('loop');
+      v.controls = true;
+      v.pause();
+    });
+  }
+</script>
+</body>
+</html>
