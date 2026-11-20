@@ -52,6 +52,15 @@ curl -fsSL https://raw.githubusercontent.com/seenew22/Shelf-releases/main/instal
 
 무료입니다. 기능 제한판이나 유료 전환이 없습니다.
 
+### 맥의 스포트라이트에도 클립보드 기록이 있던데요?
+
+있습니다. macOS 26 Tahoe부터 스포트라이트가 클립보드를 기억하고, 텍스트와 링크, 이미지, 파일을 모두 다룹니다.
+겹치는 부분이 많습니다.
+
+다른 점은 보관 기간입니다. 스포트라이트는 30분, 8시간, 7일 중에 고르고 기본값이 8시간이지만,
+이 앱은 기간 제한이 없고 고정한 항목은 개수 제한에서도 빠집니다.
+그리고 이 앱의 패널은 열려도 포커스를 가져가지 않아서, 쓰던 앱에 그대로 끌어다 놓을 수 있습니다.
+
 ### 복사한 내용이 어디론가 전송되나요?
 
 아니요. 이 앱은 네트워크 통신을 하지 않습니다. 계정도 서버도 클라우드 동기화도 없습니다.
@@ -90,6 +99,9 @@ Click an item to copy it back, or drag it out and it lands as a real file, not a
 It keeps the last 50 items, skips anything a password manager marks as sensitive, and stores
 everything in `~/Library/Application Support/Shelf`. No account, no server, no sync, no network calls.
 Requires macOS 14 or later, runs on Apple Silicon and Intel.
+macOS 26's Spotlight also keeps a clipboard history, but it holds items for at most 7 days
+(8 hours by default). Shelf keeps them with no time limit, pinned items are exempt from the cap,
+and its panel never takes focus, so you can drag straight into the app you are working in.
 Install with `curl -fsSL https://raw.githubusercontent.com/seenew22/Shelf-releases/main/install.sh | bash`.
 
 ## 링크
